@@ -72,11 +72,9 @@ func initConfig() {
 
 func run(cmd *cobra.Command, args []string) {
 
-	if len(args) == 0 {
-		cmd.Help()
-		os.Exit(0)
-	}
+	var input_hash string
 
+	size := viper.GetInt("config.size")
 	git_hash, _ := cmd.Flags().GetString("git")
 	use_latest, _ := cmd.Flags().GetBool("git-latest")
 
@@ -87,7 +85,10 @@ func run(cmd *cobra.Command, args []string) {
 		repo, _ := git.PlainOpen(filepath.Dir(executable))
 		ref, _ := repo.Head()
 
-		git_hash = strings.Split(ref.String(), " ")[0]
+		input_hash = strings.Split(ref.String(), " ")[0]
+		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, viper.GetStringSlice("theme.red"))
+
+		return
 
 	}
 
@@ -100,8 +101,19 @@ func run(cmd *cobra.Command, args []string) {
 			os.Exit(1)
 		}
 
+		input_hash = git_hash
+		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, viper.GetStringSlice("theme.red"))
+
+		return
+
 	}
 
-	fmt.Println(git_hash)
+	if len(args) == 0 {
+		cmd.Help()
+		os.Exit(0)
+	}
+
+	input_hash = args[0]
+	image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, viper.GetStringSlice("theme.red"))
 
 }
