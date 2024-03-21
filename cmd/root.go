@@ -6,7 +6,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/go-git/go-git/v5"
@@ -80,9 +79,8 @@ func run(cmd *cobra.Command, args []string) {
 
 	if use_latest {
 
-		executable, _ := os.Executable()
-
-		repo, err := git.PlainOpen(filepath.Dir(executable))
+		current_dir, _ := os.Getwd()
+		repo, err := git.PlainOpen(current_dir)
 
 		if err != nil {
 			fmt.Println("Error: git repository not found in current working directory")
