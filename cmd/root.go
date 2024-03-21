@@ -118,6 +118,13 @@ func run(cmd *cobra.Command, args []string) {
 	}
 
 	input_hash = args[0]
+	err := hash_check(input_hash, "SHA256")
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, viper.GetStringSlice("theme.red"))
 
 }
