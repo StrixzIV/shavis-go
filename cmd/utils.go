@@ -22,13 +22,13 @@ func hash_check(hash string, hash_type string) error {
 	case "SHA1":
 
 		if len(hash) != 40 {
-			return fmt.Errorf("Error: SHA1(GitHub) hash must be 40 characters long.")
+			return fmt.Errorf("error: SHA1(GitHub) hash must be 40 characters long")
 		}
 
 	case "SHA256":
 
 		if len(hash) != 64 {
-			return fmt.Errorf("Error: SHA256 hash must be 64 characters long.")
+			return fmt.Errorf("error: SHA256 hash must be 64 characters long")
 		}
 
 	}
@@ -38,7 +38,7 @@ func hash_check(hash string, hash_type string) error {
 		character := hash[idx]
 
 		if (character < '0' || character > '9') && (character < 'a' || character > 'f') {
-			return fmt.Errorf("Error: Invalid hashsum in hash string\n%s\n%s", hash, strings.Repeat(" ", idx)+"↑")
+			return fmt.Errorf("error: Invalid hashsum in hash string\n%s\n%s", hash, strings.Repeat(" ", idx)+"↑")
 		}
 
 	}
@@ -59,7 +59,7 @@ func hex_to_RGBA(color_hex string) (color_struct color.RGBA, err error) {
 func image_from_hash(hash string, filename string, width int, height int, size int, palette []string) error {
 
 	if size > 8 {
-		return fmt.Errorf("Error: size must be an integer between 1 to 8")
+		return fmt.Errorf("error: size must be an integer between 1 to 8")
 	}
 
 	top_left := image.Point{0, 0}
@@ -74,7 +74,7 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 		color_struct, err := hex_to_RGBA(color_hex)
 
 		if err != nil {
-			return fmt.Errorf("Error: Cannot convert color #%s to RGBA", color_hex)
+			return fmt.Errorf("error: Cannot convert color #%s to RGBA", color_hex)
 		}
 
 		color_palette = append(color_palette, color_struct)
@@ -87,8 +87,6 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 		result, _ := strconv.ParseInt(string(char), 16, 64)
 		decimal_values = append(decimal_values, int(result))
 	}
-
-	fmt.Println(decimal_values)
 
 	var decimal_values_mat [][]int
 
@@ -104,8 +102,6 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 
 	}
 
-	fmt.Println(decimal_values_mat)
-
 	for row_idx, row := range decimal_values_mat {
 		for col_idx, value := range row {
 			img.Set(col_idx, row_idx, color_palette[value])
@@ -115,22 +111,18 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 	f, _ := os.Create(filename)
 	png.Encode(f, img)
 
-	fmt.Println("Main image done")
-
 	src, err := imaging.Open(filename)
 
 	if err != nil {
-		return fmt.Errorf("Error: Failed to open image: %v", err)
+		return fmt.Errorf("error: Failed to open image: %v", err)
 	}
 
 	src = imaging.Resize(src, int(math.Pow(2, float64(size)+2)), 0, imaging.NearestNeighbor)
 	err = imaging.Save(src, filename)
 
 	if err != nil {
-		return fmt.Errorf("Error: Failed to save image: %v", err)
+		return fmt.Errorf("error: Failed to save image: %v", err)
 	}
-
-	fmt.Println("Resized image done")
 
 	return nil
 }
