@@ -82,7 +82,13 @@ func run(cmd *cobra.Command, args []string) {
 
 		executable, _ := os.Executable()
 
-		repo, _ := git.PlainOpen(filepath.Dir(executable))
+		repo, err := git.PlainOpen(filepath.Dir(executable))
+
+		if err != nil {
+			fmt.Println("Error: git repository not found in current working directory")
+			os.Exit(1)
+		}
+
 		ref, _ := repo.Head()
 
 		input_hash = strings.Split(ref.String(), " ")[0]
