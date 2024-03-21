@@ -76,6 +76,11 @@ func initConfig() {
 
 func run(cmd *cobra.Command, args []string) {
 
+	if len(args) == 0 {
+		cmd.Help()
+		os.Exit(0)
+	}
+
 	git_hash, _ := cmd.Flags().GetString("git")
 	use_latest, _ := cmd.Flags().GetBool("git-latest")
 
