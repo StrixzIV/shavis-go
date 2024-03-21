@@ -46,7 +46,7 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.PersistentFlags().BoolP("git-latest", "l", false, "Use a latest git commit hash to generate 8x5 image")
+	rootCmd.PersistentFlags().BoolP("git-latest", "l", false, "Use a latest git commit from current working directory hash to generate 8x5 image")
 	rootCmd.PersistentFlags().StringP("git", "g", "", "Use a specified git commit hash to generate 8x5 image")
 }
 
@@ -63,6 +63,17 @@ func run(cmd *cobra.Command, args []string) {
 		ref, _ := repo.Head()
 
 		git_hash = strings.Split(ref.String(), " ")[0]
+
+	}
+
+	if git_hash != "" {
+
+		err := hash_check(git_hash, "SHA1")
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 
 	}
 
