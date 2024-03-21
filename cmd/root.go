@@ -42,6 +42,7 @@ func init() {
 
 	rootCmd.PersistentFlags().BoolP("git-latest", "l", false, "Use a latest git commit from current working directory hash to generate 8x5 image")
 	rootCmd.PersistentFlags().StringP("git", "g", "", "Use a specified git commit hash to generate 8x5 image")
+	rootCmd.PersistentFlags().StringP("theme", "t", "", "Use a specified a color theme of generated image")
 
 }
 
@@ -74,8 +75,26 @@ func run(cmd *cobra.Command, args []string) {
 	var input_hash string
 
 	size := viper.GetInt("config.size")
+	theme := viper.GetStringMapStringSlice("theme")[viper.GetString("config.theme")]
+
+	theme_name, _ := cmd.Flags().GetString("theme")
 	git_hash, _ := cmd.Flags().GetString("git")
 	use_latest, _ := cmd.Flags().GetBool("git-latest")
+
+	if theme_name != "" {
+
+		themes := viper.GetStringMapStringSlice("theme")
+
+		theme_data, exists := themes[theme_name]
+
+		if !exists {
+			fmt.Printf("Error: theme \"%s\" is not defined in .shavis-go.yaml file\n", theme_name)
+			os.Exit(1)
+		}
+
+		theme = theme_data
+
+	}
 
 	if use_latest {
 
@@ -90,7 +109,7 @@ func run(cmd *cobra.Command, args []string) {
 		ref, _ := repo.Head()
 
 		input_hash = strings.Split(ref.String(), " ")[0]
-		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, viper.GetStringSlice("theme.red"))
+		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, theme)
 
 		return
 
@@ -106,7 +125,7 @@ func run(cmd *cobra.Command, args []string) {
 		}
 
 		input_hash = git_hash
-		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, viper.GetStringSlice("theme.red"))
+		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, theme)
 
 		return
 
@@ -125,6 +144,6 @@ func run(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, viper.GetStringSlice("theme.red"))
+	image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, theme)
 
 }
