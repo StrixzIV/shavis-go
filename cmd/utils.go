@@ -1,10 +1,12 @@
 package cmd
 
 import (
+	"crypto/sha256"
 	"fmt"
 	"image"
 	"image/color"
 	"image/png"
+	"io"
 	"math"
 	"os"
 	"strconv"
@@ -45,6 +47,26 @@ func hash_check(hash string, hash_type string) error {
 
 	return nil
 
+}
+
+func filedata_to_hash(filename string) (string, error) {
+
+	hash := sha256.New()
+	file, err := os.Open(filename)
+
+	if err != nil {
+		return "", fmt.Errorf("error: an error occured while opening file \n%s\n", err)
+	}
+
+	defer file.Close()
+
+	if _, err := io.Copy(hash, file); err != nil {
+		return "", fmt.Errorf("error: an error occured whlie doing hash checksum \n%s\n", err)
+	}
+
+	result := fmt.Sprintf("%x", hash.Sum(nil))
+
+	return result, nil
 }
 
 func hex_to_RGBA(color_hex string) (color_struct color.RGBA, err error) {

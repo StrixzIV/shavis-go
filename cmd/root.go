@@ -42,6 +42,7 @@ func init() {
 
 	rootCmd.PersistentFlags().BoolP("git-latest", "l", false, "Use a latest git commit from current working directory hash to generate 8x5 image")
 	rootCmd.PersistentFlags().StringP("git", "g", "", "Use a specified git commit hash to generate 8x5 image")
+	rootCmd.PersistentFlags().StringP("file", "f", "", "Use a file's SHA256 checksum to generate 8x8 image")
 	rootCmd.PersistentFlags().StringP("theme", "t", "", "Use a specified a color theme of generated image")
 	rootCmd.PersistentFlags().StringP("output", "o", "", "Specified a name for output image (Ex. result.png, output.png, your_name.png)")
 
@@ -82,6 +83,7 @@ func run(cmd *cobra.Command, args []string) {
 	git_hash, _ := cmd.Flags().GetString("git")
 	use_latest, _ := cmd.Flags().GetBool("git-latest")
 	output_name, _ := cmd.Flags().GetString("output")
+	file_name, _ := cmd.Flags().GetString("file")
 
 	if theme_name != "" {
 
@@ -143,6 +145,25 @@ func run(cmd *cobra.Command, args []string) {
 		}
 
 		image_from_hash(input_hash, output_name, 8, 5, size, theme)
+		return
+
+	}
+
+	if file_name != "" {
+
+		input_hash, err := filedata_to_hash(file_name)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		if output_name == "" {
+			image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, theme)
+			return
+		}
+
+		image_from_hash(input_hash, output_name, 8, 8, size, theme)
 		return
 
 	}
