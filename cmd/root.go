@@ -17,7 +17,7 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "shavis-go [SHA256 hash]",
+	Use:   "shavis [SHA256 hash]",
 	Short: "A Go implimentation of SHA256 or SHA1 hash sum visualization, either directly, file or git commit hash based on: https://github.com/kernel137/shavis",
 	Long: `A Go implimentation of SHA256 or SHA1 hash sum visualization, either directly, file or git commit hash
 based on https://github.com/kernel137/shavis original implimentation in Python
@@ -66,10 +66,12 @@ func initConfig() {
 
 	viper.AutomaticEnv() // read in environment variables that match
 
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Fprintln(os.Stderr, "error: config file not found in home directory")
+		fmt.Fprintln(os.Stderr, "please put \".shavis-go.yaml\" in your home directory or use \"shavis [args] --config config_path\" to temporary set an image generation config")
+		os.Exit(1)
 	}
+
 }
 
 func run(cmd *cobra.Command, args []string) {
