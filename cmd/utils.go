@@ -80,10 +80,6 @@ func hex_to_RGBA(color_hex string) (color_struct color.RGBA, err error) {
 
 func image_from_hash(hash string, filename string, width int, height int, size int, palette []string) error {
 
-	if size > 8 {
-		return fmt.Errorf("error: size must be an integer between 1 to 8")
-	}
-
 	top_left := image.Point{0, 0}
 	bottom_right := image.Point{width, height}
 

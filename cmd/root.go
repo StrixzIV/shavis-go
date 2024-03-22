@@ -15,6 +15,19 @@ import (
 
 var cfgFile string
 
+var size_table string = `
+N 	SHA256   	SHA1 (Git)
+1 	8x8      	8x5
+2 	16x16    	16x10
+3 	32x32    	32x20
+4 	64x64    	64x40
+5 	128x128  	128x80
+6 	256x256  	256x160
+7 	512x512  	512x320
+8 	1024x1024	1024x640
+9 	2048x2048	2048x1280
+10	4096x4096	4096x2560`
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "shavis [SHA256 hash]",
@@ -45,6 +58,7 @@ func init() {
 	rootCmd.PersistentFlags().StringP("file", "f", "", "Use a file's SHA256 checksum to generate 8x8 image")
 	rootCmd.PersistentFlags().StringP("theme", "t", "", "Use a specified a color theme of generated image")
 	rootCmd.PersistentFlags().StringP("output", "o", "", "Specified a name for output image (Ex. result.png, output.png, your_name.png)")
+	rootCmd.PersistentFlags().IntP("size", "s", 7, "Specified a size for output image"+size_table)
 
 }
 
@@ -86,6 +100,7 @@ func run(cmd *cobra.Command, args []string) {
 	use_latest, _ := cmd.Flags().GetBool("git-latest")
 	output_name, _ := cmd.Flags().GetString("output")
 	file_name, _ := cmd.Flags().GetString("file")
+	user_size, _ := cmd.Flags().GetInt("size")
 
 	if theme_name != "" {
 
@@ -105,6 +120,16 @@ func run(cmd *cobra.Command, args []string) {
 	if (output_name != "") && (!strings.HasSuffix(output_name, ".png")) {
 		fmt.Println("Error: output name must ended with \".png\"")
 		os.Exit(1)
+	}
+
+	if user_size < 1 || user_size > 10 {
+		fmt.Println("Error: output size must be between 1 and 10", size_table)
+		os.Exit(1)
+	}
+
+	if user_size != 7 {
+		size_ptr := &size
+		*size_ptr = user_size
 	}
 
 	if use_latest {
