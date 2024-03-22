@@ -43,6 +43,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolP("git-latest", "l", false, "Use a latest git commit from current working directory hash to generate 8x5 image")
 	rootCmd.PersistentFlags().StringP("git", "g", "", "Use a specified git commit hash to generate 8x5 image")
 	rootCmd.PersistentFlags().StringP("theme", "t", "", "Use a specified a color theme of generated image")
+	rootCmd.PersistentFlags().StringP("output", "o", "", "Specified a name for output image (Ex. result.png, output.png, your_name.png)")
 
 }
 
@@ -80,6 +81,7 @@ func run(cmd *cobra.Command, args []string) {
 	theme_name, _ := cmd.Flags().GetString("theme")
 	git_hash, _ := cmd.Flags().GetString("git")
 	use_latest, _ := cmd.Flags().GetBool("git-latest")
+	output_name, _ := cmd.Flags().GetString("output")
 
 	if theme_name != "" {
 
@@ -96,6 +98,11 @@ func run(cmd *cobra.Command, args []string) {
 
 	}
 
+	if (output_name != "") && (!strings.HasSuffix(output_name, ".png")) {
+		fmt.Println("Error: output name must ended with \".png\"")
+		os.Exit(1)
+	}
+
 	if use_latest {
 
 		current_dir, _ := os.Getwd()
@@ -107,10 +114,14 @@ func run(cmd *cobra.Command, args []string) {
 		}
 
 		ref, _ := repo.Head()
-
 		input_hash = strings.Split(ref.String(), " ")[0]
-		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, theme)
 
+		if output_name == "" {
+			image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, theme)
+			return
+		}
+
+		image_from_hash(input_hash, output_name, 8, 5, size, theme)
 		return
 
 	}
@@ -125,8 +136,13 @@ func run(cmd *cobra.Command, args []string) {
 		}
 
 		input_hash = git_hash
-		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, theme)
 
+		if output_name == "" {
+			image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, theme)
+			return
+		}
+
+		image_from_hash(input_hash, output_name, 8, 5, size, theme)
 		return
 
 	}
@@ -144,6 +160,11 @@ func run(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, theme)
+	if output_name == "" {
+		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, theme)
+		return
+	}
+
+	image_from_hash(input_hash, output_name, 8, 8, size, theme)
 
 }
