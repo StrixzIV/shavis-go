@@ -17,7 +17,7 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "shavis-go",
+	Use:   "shavis-go [SHA256 hash]",
 	Short: "A Go implimentation of SHA256 or SHA1 hash sum visualization, either directly, file or git commit hash based on: https://github.com/kernel137/shavis",
 	Long: `A Go implimentation of SHA256 or SHA1 hash sum visualization, either directly, file or git commit hash
 based on https://github.com/kernel137/shavis original implimentation in Python
