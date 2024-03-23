@@ -8,6 +8,10 @@ based on **[kernel137/shavis](https://github.com/kernel137/shavis)** built with 
   <img src="./assets/example.png">
 </p>
 
+## Prerequisites
+
+* Go compiler version 1.22.0 or higher
+
 ## Installation
 
 1. Clone this repository
