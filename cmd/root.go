@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/go-git/go-git/v5"
@@ -64,9 +65,14 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+
 	if cfgFile != "" {
-		// Use config file from the flag.
+
+		current_dir, _ := os.Getwd()
+
 		viper.SetConfigFile(cfgFile)
+		fmt.Printf("Using config file: %s\n", path.Join(current_dir, viper.ConfigFileUsed()))
+
 	} else {
 		// Find home directory.
 		home, err := os.UserHomeDir()
