@@ -11,6 +11,7 @@ based on **[kernel137/shavis](https://github.com/kernel137/shavis)** built with 
 ## Prerequisites
 
 * Go compiler version 1.22.0 or higher
+* GOPATH added to environment variables
 
 ## Installation
 
@@ -20,22 +21,16 @@ based on **[kernel137/shavis](https://github.com/kernel137/shavis)** built with 
 git clone https://github.com/StrixzIV/shavis-go.git
 ```
 
-2. Build an executable file
+2. Run the installation script
 
 **UNIX**
 
 ```sh
-./build.sh
+./install.sh
 ```
 
 **Windows**
 
 ```sh
-./build.bat
+./install.bat
 ```
-
-3. Add shavis-go directory to PATH
-
-4. Copy `.shavis-go.yaml` and put it in home directory
-   * **UNIX**: `~/`
-   * **Windows**: `%userprofile%`
