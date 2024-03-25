@@ -93,7 +93,8 @@ func run(cmd *cobra.Command, args []string) {
 	var input_hash string
 
 	size := viper.GetInt("config.size")
-	theme := viper.GetStringMapStringSlice("theme")[viper.GetString("config.theme")]
+	theme := viper.GetString("config.theme")
+	themes := viper.GetStringMapStringSlice("theme")
 
 	theme_name, _ := cmd.Flags().GetString("theme")
 	git_hash, _ := cmd.Flags().GetString("git")
@@ -103,18 +104,7 @@ func run(cmd *cobra.Command, args []string) {
 	user_size, _ := cmd.Flags().GetInt("size")
 
 	if theme_name != "" {
-
-		themes := viper.GetStringMapStringSlice("theme")
-
-		theme_data, exists := themes[theme_name]
-
-		if !exists {
-			fmt.Printf("Error: theme \"%s\" is not defined in .shavis-go.yaml file\n", theme_name)
-			os.Exit(1)
-		}
-
-		theme = theme_data
-
+		theme = theme_name
 	}
 
 	if (output_name != "") && (!strings.HasSuffix(output_name, ".png")) {
@@ -146,11 +136,25 @@ func run(cmd *cobra.Command, args []string) {
 		input_hash = strings.Split(ref.String(), " ")[0]
 
 		if output_name == "" {
-			image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, theme)
+
+			err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, themes, theme)
+
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+
 			return
+
 		}
 
-		image_from_hash(input_hash, output_name, 8, 5, size, theme)
+		err = image_from_hash(input_hash, output_name, 8, 5, size, themes, theme)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
 		return
 
 	}
@@ -167,11 +171,25 @@ func run(cmd *cobra.Command, args []string) {
 		input_hash = git_hash
 
 		if output_name == "" {
-			image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, theme)
+
+			err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, themes, theme)
+
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+
 			return
+
 		}
 
-		image_from_hash(input_hash, output_name, 8, 5, size, theme)
+		err = image_from_hash(input_hash, output_name, 8, 5, size, themes, theme)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
 		return
 
 	}
@@ -186,11 +204,25 @@ func run(cmd *cobra.Command, args []string) {
 		}
 
 		if output_name == "" {
-			image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, theme)
+
+			err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, themes, theme)
+
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+
 			return
+
 		}
 
-		image_from_hash(input_hash, output_name, 8, 8, size, theme)
+		err = image_from_hash(input_hash, output_name, 8, 8, size, themes, theme)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
 		return
 
 	}
@@ -209,10 +241,23 @@ func run(cmd *cobra.Command, args []string) {
 	}
 
 	if output_name == "" {
-		image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, theme)
+
+		err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, themes, theme)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
 		return
+
 	}
 
-	image_from_hash(input_hash, output_name, 8, 8, size, theme)
+	err = image_from_hash(input_hash, output_name, 8, 8, size, themes, theme)
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 }

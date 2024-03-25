@@ -55,13 +55,13 @@ func filedata_to_hash(filename string) (string, error) {
 	file, err := os.Open(filename)
 
 	if err != nil {
-		return "", fmt.Errorf("error: an error occured while opening file \n%s\n", err)
+		return "", fmt.Errorf("error: an error occured while opening file \n%s", err)
 	}
 
 	defer file.Close()
 
 	if _, err := io.Copy(hash, file); err != nil {
-		return "", fmt.Errorf("error: an error occured whlie doing hash checksum \n%s\n", err)
+		return "", fmt.Errorf("error: an error occured whlie doing hash checksum \n%s", err)
 	}
 
 	result := fmt.Sprintf("%x", hash.Sum(nil))
@@ -78,7 +78,17 @@ func hex_to_RGBA(color_hex string) (color_struct color.RGBA, err error) {
 
 }
 
-func image_from_hash(hash string, filename string, width int, height int, size int, palette []string) error {
+func image_from_hash(hash string, filename string, width int, height int, size int, theme_map map[string][]string, theme_name string) error {
+
+	palette, exists := theme_map[theme_name]
+
+	if !exists {
+		return fmt.Errorf("error: theme \"%s\" is not defined in .shavis-go.yaml file", theme_name)
+	}
+
+	if len(palette) != 16 {
+		return fmt.Errorf("error: a theme must have 16 colors, got %d in \"%s\" theme in .shavis-go.yaml file", len(palette), theme_name)
+	}
 
 	top_left := image.Point{0, 0}
 	bottom_right := image.Point{width, height}
