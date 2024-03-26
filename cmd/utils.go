@@ -95,7 +95,7 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 
 	img := image.NewRGBA(image.Rectangle{top_left, bottom_right})
 
-	var color_palette []color.RGBA
+	color_palette := make([]color.RGBA, 0, len(palette))
 
 	for _, color_hex := range palette {
 
@@ -109,7 +109,7 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 
 	}
 
-	var decimal_values []int
+	decimal_values := make([]int, 0, len(hash))
 
 	for _, char := range hash {
 		result, _ := strconv.ParseInt(string(char), 16, 64)
