@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"image/png"
 	"io"
 	"math"
 	"os"
@@ -136,17 +135,10 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 		}
 	}
 
-	f, _ := os.Create(filename)
-	png.Encode(f, img)
-
-	src, err := imaging.Open(filename)
-
-	if err != nil {
-		return fmt.Errorf("error: Failed to open image: %v", err)
-	}
+	src := image.Image(img)
 
 	src = imaging.Resize(src, int(math.Pow(2, float64(size)+2)), 0, imaging.NearestNeighbor)
-	err = imaging.Save(src, filename)
+	err := imaging.Save(src, filename)
 
 	if err != nil {
 		return fmt.Errorf("error: Failed to save image: %v", err)
