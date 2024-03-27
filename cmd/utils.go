@@ -77,9 +77,9 @@ func hex_to_RGBA(color_hex string) (color_struct color.RGBA, err error) {
 
 }
 
-func image_from_hash(hash string, filename string, width int, height int, size int, theme_map map[string][]string, theme_name string) error {
+func image_from_hash(hash string, filename string, width int, height int, size int, theme_map *map[string][]string, theme_name string) error {
 
-	palette, exists := theme_map[theme_name]
+	palette, exists := (*theme_map)[theme_name]
 
 	if !exists {
 		return fmt.Errorf("error: theme \"%s\" is not defined in .shavis-go.yaml file", theme_name)
@@ -94,7 +94,7 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 
 	img := image.NewRGBA(image.Rectangle{top_left, bottom_right})
 
-	color_palette := make([]color.RGBA, 0, len(palette))
+	color_palette := make([]color.RGBA, 0, 16)
 
 	for _, color_hex := range palette {
 
