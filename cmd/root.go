@@ -167,7 +167,7 @@ func run(cmd *cobra.Command, args []string) {
 
 	if git_hash != "" {
 
-		err := hash_check(git_hash, "SHA1")
+		err := hash_check(git_hash, SHA1)
 
 		if err != nil {
 			fmt.Println(err)
@@ -239,7 +239,7 @@ func run(cmd *cobra.Command, args []string) {
 	}
 
 	input_hash = args[0]
-	err := hash_check(input_hash, "SHA256")
+	err := hash_check(input_hash, SHA256)
 
 	if err != nil {
 		fmt.Println(err)

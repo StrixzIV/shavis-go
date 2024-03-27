@@ -14,19 +14,26 @@ import (
 	"github.com/disintegration/imaging"
 )
 
-func hash_check(hash string, hash_type string) error {
+type HashType uint8
+
+const (
+	SHA1 HashType = iota
+	SHA256
+)
+
+func hash_check(hash string, hash_type HashType) error {
 
 	hash = strings.ToLower(hash)
 
 	switch hash_type {
 
-	case "SHA1":
+	case SHA1:
 
 		if len(hash) != 40 {
 			return fmt.Errorf("error: SHA1(GitHub) hash must be 40 characters long")
 		}
 
-	case "SHA256":
+	case SHA256:
 
 		if len(hash) != 64 {
 			return fmt.Errorf("error: SHA256 hash must be 64 characters long")
