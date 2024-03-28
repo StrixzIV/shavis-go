@@ -67,8 +67,23 @@ func filedata_to_hash(filename string) (string, error) {
 
 	defer file.Close()
 
-	if _, err := io.Copy(hash, file); err != nil {
-		return "", fmt.Errorf("error: an error occured whlie doing hash checksum \n%s", err)
+	// Buffer size set to 64kb
+	buffer := make([]byte, 65536)
+
+	for {
+
+		n, err := file.Read(buffer)
+
+		if err != nil && err != io.EOF {
+			return "", fmt.Errorf("error: an error occured whlie doing hash checksum \n%s", err)
+		}
+
+		if n == 0 {
+			break
+		}
+
+		hash.Write(buffer[:n])
+
 	}
 
 	result := fmt.Sprintf("%x", hash.Sum(nil))
