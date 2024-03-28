@@ -118,8 +118,15 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 	decimal_values := make([]int, 0, len(hash))
 
 	for _, char := range hash {
+
 		result, _ := strconv.ParseInt(string(char), 16, 64)
+
+		if (result < math.MinInt) || (result > math.MaxInt) {
+			return fmt.Errorf("error: Integer overflow while parsing hash into decimal values")
+		}
+
 		decimal_values = append(decimal_values, int(result))
+
 	}
 
 	var decimal_values_mat [][]int
