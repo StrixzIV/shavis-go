@@ -118,6 +118,11 @@ func run(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+	if size < 1 || size > 10 {
+		fmt.Printf("Error: default output size specified in config file must be between 1 and 10 (current default size: %d)%s\n", size, size_table)
+		os.Exit(1)
+	}
+
 	if user_size < 1 || user_size > 10 {
 		fmt.Println("Error: output size must be between 1 and 10", size_table)
 		os.Exit(1)
