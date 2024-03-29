@@ -96,6 +96,11 @@ func initConfig() {
 
 func run(cmd *cobra.Command, args []string) {
 
+	if len(os.Args) == 1 {
+		cmd.Help()
+		os.Exit(0)
+	}
+
 	var input_hash string
 
 	size := viper.GetInt("config.size")
@@ -236,11 +241,6 @@ func run(cmd *cobra.Command, args []string) {
 
 		return
 
-	}
-
-	if len(args) == 0 {
-		cmd.Help()
-		os.Exit(0)
 	}
 
 	input_hash = args[0]
