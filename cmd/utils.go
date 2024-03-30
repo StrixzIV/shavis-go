@@ -100,7 +100,7 @@ func hex_to_RGBA(color_hex string) (color_struct color.RGBA, err error) {
 
 }
 
-func image_from_hash(hash string, filename string, width int, height int, size int, theme_map *map[string][]string, theme_name string) error {
+func image_from_hash(hash string, filename string, hash_type HashType, size int, theme_map *map[string][]string, theme_name string) error {
 
 	palette, exists := (*theme_map)[theme_name]
 
@@ -110,6 +110,19 @@ func image_from_hash(hash string, filename string, width int, height int, size i
 
 	if len(palette) != 16 {
 		return fmt.Errorf("error: a theme must have 16 colors, got %d in \"%s\" theme in .shavis-go.yaml file", len(palette), theme_name)
+	}
+
+	var width int
+	var height int
+
+	switch hash_type {
+
+	case SHA1:
+		width, height = 8, 5
+
+	case SHA256:
+		width, height = 8, 8
+
 	}
 
 	top_left := image.Point{0, 0}

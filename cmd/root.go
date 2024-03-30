@@ -153,7 +153,7 @@ func run(cmd *cobra.Command, args []string) {
 
 		if output_name == "" {
 
-			err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, &themes, theme)
+			err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), SHA1, size, &themes, theme)
 
 			if err != nil {
 				fmt.Println(err)
@@ -164,7 +164,7 @@ func run(cmd *cobra.Command, args []string) {
 
 		}
 
-		err = image_from_hash(input_hash, output_name, 8, 5, size, &themes, theme)
+		err = image_from_hash(input_hash, output_name, SHA1, size, &themes, theme)
 
 		if err != nil {
 			fmt.Println(err)
@@ -188,7 +188,7 @@ func run(cmd *cobra.Command, args []string) {
 
 		if output_name == "" {
 
-			err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 5, size, &themes, theme)
+			err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), SHA1, size, &themes, theme)
 
 			if err != nil {
 				fmt.Println(err)
@@ -199,7 +199,7 @@ func run(cmd *cobra.Command, args []string) {
 
 		}
 
-		err = image_from_hash(input_hash, output_name, 8, 5, size, &themes, theme)
+		err = image_from_hash(input_hash, output_name, SHA1, size, &themes, theme)
 
 		if err != nil {
 			fmt.Println(err)
@@ -221,7 +221,7 @@ func run(cmd *cobra.Command, args []string) {
 
 		if output_name == "" {
 
-			err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, &themes, theme)
+			err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), SHA256, size, &themes, theme)
 
 			if err != nil {
 				fmt.Println(err)
@@ -232,7 +232,7 @@ func run(cmd *cobra.Command, args []string) {
 
 		}
 
-		err = image_from_hash(input_hash, output_name, 8, 8, size, &themes, theme)
+		err = image_from_hash(input_hash, output_name, SHA256, size, &themes, theme)
 
 		if err != nil {
 			fmt.Println(err)
@@ -253,7 +253,7 @@ func run(cmd *cobra.Command, args []string) {
 
 	if output_name == "" {
 
-		err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), 8, 8, size, &themes, theme)
+		err = image_from_hash(input_hash, fmt.Sprintf("%s.png", input_hash), SHA256, size, &themes, theme)
 
 		if err != nil {
 			fmt.Println(err)
@@ -264,7 +264,7 @@ func run(cmd *cobra.Command, args []string) {
 
 	}
 
-	err = image_from_hash(input_hash, output_name, 8, 8, size, &themes, theme)
+	err = image_from_hash(input_hash, output_name, SHA256, size, &themes, theme)
 
 	if err != nil {
 		fmt.Println(err)
