@@ -136,17 +136,18 @@ func image_from_hash(hash string, filename string, hash_type HashType, size int,
 
 	img := image.NewRGBA(image.Rectangle{top_left, bottom_right})
 
-	color_palette := make([]color.RGBA, 0, 16)
+	color_palette := make([]color.RGBA, 16)
 
-	for _, color_hex := range palette {
+	for idx := 0; idx < 16; idx++ {
 
+		color_hex := palette[idx]
 		color_struct, err := hex_to_RGBA(color_hex)
 
 		if err != nil {
 			return fmt.Errorf("error: Cannot convert color #%s to RGBA", color_hex)
 		}
 
-		color_palette = append(color_palette, color_struct)
+		color_palette[idx] = color_struct
 
 	}
 
