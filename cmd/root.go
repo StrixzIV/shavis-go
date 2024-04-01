@@ -54,6 +54,7 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.shavis-go.yaml)")
 
+	rootCmd.PersistentFlags().BoolP("mono", "m", false, "Set output theme to \"mono\" (equvalent to \"--theme mono\")\nif --mono and --theme are supplied, a selected theme will be override with \"mono\"")
 	rootCmd.PersistentFlags().BoolP("git-latest", "l", false, "Use a latest git commit from current working directory hash to generate 8x5 image")
 	rootCmd.PersistentFlags().StringP("git", "g", "", "Use a specified git commit hash to generate 8x5 image")
 	rootCmd.PersistentFlags().StringP("file", "f", "", "Use a file's SHA256 checksum to generate 8x8 image")
@@ -109,12 +110,16 @@ func run(cmd *cobra.Command, args []string) {
 
 	theme_name, _ := cmd.Flags().GetString("theme")
 	git_hash, _ := cmd.Flags().GetString("git")
+	use_mono, _ := cmd.Flags().GetBool("mono")
 	use_latest, _ := cmd.Flags().GetBool("git-latest")
 	output_name, _ := cmd.Flags().GetString("output")
 	file_name, _ := cmd.Flags().GetString("file")
 	user_size, _ := cmd.Flags().GetInt("size")
 
-	if theme_name != "" {
+	if use_mono && theme_name != "" {
+		fmt.Println("Warning: Both mono flag and theme name provided. Overriding theme with \"mono\".")
+		theme = "mono"
+	} else if theme_name != "" {
 		theme = theme_name
 	}
 

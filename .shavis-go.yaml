@@ -4,6 +4,24 @@ config:
 
 theme:
 
+  mono:
+    - "000000"
+    - "1f1f1f"
+    - "2f2f2f"
+    - "3f3f3f"
+    - "4f4f4f"
+    - "5f5f5f"
+    - "6f6f6f"
+    - "7f7f7f"
+    - "8f8f8f"
+    - "9f9f9f"
+    - "afafaf"
+    - "bfbfbf"
+    - "cfcfcf"
+    - "dfdfdf"
+    - "efefef"
+    - "ffffff"
+
   blue: 
     - "000000"
     - "170e3f"
