@@ -40,6 +40,9 @@ func hash_check(hash string, hash_type HashType) error {
 			return fmt.Errorf("error: SHA256 hash must be 64 characters long")
 		}
 
+	default:
+		return fmt.Errorf("error: unknown hash type")
+
 	}
 
 	for idx := 0; idx < hash_length; idx++ {
@@ -122,6 +125,9 @@ func image_from_hash(hash string, filename string, hash_type HashType, size int,
 
 	case SHA256:
 		width, height = 8, 8
+
+	default:
+		return fmt.Errorf("error: unknown hash type")
 
 	}
 
